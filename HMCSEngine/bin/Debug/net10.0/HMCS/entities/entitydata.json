@@ -1,0 +1,23 @@
+{
+	"Entities":
+	[
+		{
+			"ID": 0,
+			"Name": "entity0",
+			"Rendermode": 1,
+			"Behaviour": 0
+		},
+		{
+			"ID": 1,
+			"Name": "entity1",
+			"Rendermode": 1,
+			"Behaviour": 1
+		},
+		{
+			"ID": 2,
+			"Name": "entity2",
+			"Rendermode": 1,
+			"Behaviour": 3
+		}
+	]
+}
