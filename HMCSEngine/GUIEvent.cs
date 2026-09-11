@@ -1,32 +1,30 @@
-﻿using System.Numerics;
-
-namespace HMCSEngine
+﻿namespace HMCSEngine
 {
     internal abstract class GUIEvent
     {
 
     }
 
-    internal class MouseGUIEvent : GUIEvent
+    internal sealed class MouseGUIEvent : GUIEvent
     {
         public readonly MouseButtons MouseButton;
-        public readonly Vector2 MousePosition;
-        public readonly bool MouseDown;
+        public readonly KeyState MouseButtonState;
+        public readonly ScreenPosition CursorPosition;
 
-        public MouseGUIEvent(MouseButtons mousebutton, Vector2 mouseposition, bool mousedown) : base()
+        public MouseGUIEvent(MouseButtons mousebutton, KeyState buttonstate, ScreenPosition cursorposition) : base()
         {
             MouseButton = mousebutton;
-            MousePosition = mouseposition;
-            MouseDown = mousedown;
+            MouseButtonState = buttonstate;
+            CursorPosition = cursorposition;
         }
     }
 
     internal enum MouseButtons
     {
         None = 0,
-        Left,
-        Middle,
+        Left = 1,
         Right,
+        Middle = 4,
         X1,
         X2
     }

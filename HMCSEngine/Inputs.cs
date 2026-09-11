@@ -96,24 +96,40 @@ namespace HMCSEngine
             }
         }
 
+        public static KeyState GetMouseButtonState(MouseButtons button)
+        {
+            if((int)(button) > 6 || (int)(button) == 3 || (int)(button) <= 0)
+            {
+                Debug.WarningLog($"Tried to get keystate for mouse button {button} which does not exist");
+                return KeyState.Up;
+            }
+
+            return GetKeyState((VKeyCodes)(button));
+        }
+
         public static bool KeyDown(VKeyCodes key)
         {
-            return KeyStates[(int)(key)] == KeyState.Down || KeyStates[(int)(key)] == KeyState.Pressed;
+            return GetKeyState(key) == KeyState.Down || GetKeyState(key) == KeyState.Pressed;
         }
 
         public static bool KeyUp(VKeyCodes key)
         {
-            return KeyStates[(int)(key)] == KeyState.Up || KeyStates[(int)(key)] == KeyState.Released;
+            return GetKeyState(key) == KeyState.Up || GetKeyState(key) == KeyState.Released;
         }
 
         public static bool KeyPressed(VKeyCodes key)
         {
-            return KeyStates[(int)(key)] == KeyState.Pressed;
+            return GetKeyState(key) == KeyState.Pressed;
         }
 
         public static bool KeyReleased(VKeyCodes key)
         {
-            return KeyStates[(int)(key)] == KeyState.Released;
+            return GetKeyState(key) == KeyState.Released;
+        }
+
+        public static KeyState GetKeyState(VKeyCodes key)
+        {
+            return KeyStates[(int)(key)];
         }
     }
 

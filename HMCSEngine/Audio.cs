@@ -4,132 +4,61 @@ namespace HMCSEngine
 {
     public static class Audio
     {
-        public const int AudioTrackCount = 16;
+        public const int MaxSoundSlots = 32;
+        public static readonly SoundSlot[] SoundSlots = new SoundSlot[MaxSoundSlots];
+    }
 
-        private static AudioTrack[] Tracks = new AudioTrack[AudioTrackCount];
+    public sealed class SoundSlot
+    {
 
-        public static void Initialize()
+
+        public void LoadSound()
         {
-            Raylib.InitAudioDevice();
-        }
 
-        public static void Update()
-        {
-            for(int i = 0; i < Tracks.Length; i++)
-            {
-                Tracks[i].Update();
-            }
-        }
-
-        public static void Load(SoundInfo soundinfo)
-        {
-            if(string.IsNullOrEmpty(soundinfo.Name))
-            {
-                return;
-            }
-
-            Tracks[soundinfo.Track].Load(soundinfo);
-        }
-
-        public static void Play(int track)
-        {
-            Tracks[track].Play();
-        }
-
-        public static void LoadAndPlay(SoundInfo soundinfo)
-        {
-            Load(soundinfo);
-            Play(soundinfo.Track);
-        }
-
-        public static void Pause(int track)
-        {
-            Tracks[track].Pause();
-        }
-
-        public static void Stop(int track)
-        {
-            Tracks[track].Stop();
         }
     }
 
     internal struct AudioTrack
     {
-        public SoundInfo SoundInfo
-        {
-            get;
-            private set;
-        }
-
-        private Music Sound;
-
-        public float Volume
-        {
-            get;
-            set
-            {
-                
-            }
-        }
+        private readonly Queue<SoundQueueInfo> SoundStack = new Queue<SoundQueueInfo>();
+        public bool Paused = false;
 
         public AudioTrack()
         {
 
         }
 
-        public bool Playing => Raylib.IsMusicStreamPlaying(Sound);
-
-        public void Load(SoundInfo soundinfo)
+        public void AddSoundToQueue(SoundQueueInfo info)
         {
-            if (soundinfo.Priority == false && Playing == true)
-            {
-                return;
-            }
-
-            Raylib.UnloadMusicStream(Sound);
-
-            SoundInfo = soundinfo;
-
-            Sound = Raylib.LoadMusicStream(Files.GetResourcesSoundFilePath(soundinfo.Name));
-            Sound.Looping = SoundInfo.Looping;
+            SoundStack.Enqueue(info);
         }
 
-        public void Update()
+        public void AddSoundToFrontOfQueue(SoundQueueInfo info)
         {
-            Raylib.UpdateMusicStream(Sound);
-        }
 
-        public void Play()
-        {
-            Raylib.PlayMusicStream(Sound);
-        }
-
-        public void Pause()
-        {
-            Raylib.PauseMusicStream(Sound);
-        }
-
-        public void Stop()
-        {
-            Raylib.StopMusicStream(Sound);
         }
     }
 
-    public struct SoundInfo
+    internal struct SoundQueueInfo
     {
-        public readonly string Name = "";
+        public readonly string Name;
+        public readonly uint Time;
+        public readonly
 
-        public readonly int Track = 0;
-
-        public readonly bool Priority = false;
-        public readonly bool Looping = false;
-
-        public SoundInfo(string name, int track, bool priority, bool looping)
+        public SoundQueueInfo(string name, uint time)
         {
             Name = name;
-            Track = track;
-            Priority = priority;
-            Looping = looping;
+            Time = time;
+        }
+    }
+
+    public class SoundID
+    {
+        public readonly byte ID;
+
+        public SoundID(byte id)
+        {
+            ID = id;
         }
     }
 }

@@ -5,28 +5,8 @@ namespace HMCSEngine
 {
     internal static class Renderer
     {
-        private static float windowscale = 1.0f;
-        public static float WindowScale
-        {
-            get
-            {
-                return windowscale;
-            }
-            set
-            {
-                windowscale = value;
-                Raylib.SetWindowSize(WindowWidth, WindowHeight);
-            }
-        }
-
-        public const int ReferenceWindowWidth = 320;
-        public const int ReferenceWindowHeight = 240;
-
-        public static int WindowWidth => (int)(ReferenceWindowWidth * WindowScale);
-        public static int WindowHeight => (int)(ReferenceWindowHeight * WindowScale);
-
-        public static int TileHorizontalViewDistance => ReferenceWindowWidth / 16;
-        public static int TileVerticalViewDistance => ReferenceWindowHeight / 16;
+        public static int TileHorizontalViewDistance => Screen.ReferenceWindowWidth / 16;
+        public static int TileVerticalViewDistance => Screen.ReferenceWindowHeight / 16;
 
         public static bool ToggleDowner = true;
         public static bool ToggleUpper = true;
@@ -36,7 +16,7 @@ namespace HMCSEngine
         {
             Raylib.SetConfigFlags(ConfigFlags.AlwaysRunWindow | ConfigFlags.ResizableWindow);
             Raylib.SetTargetFPS(45);
-            Raylib.InitWindow(WindowWidth, WindowHeight, HMCS.WindowTitle);
+            Raylib.InitWindow(Screen.Width, Screen.Height, HMCS.WindowTitle);
         }
 
         public static void Draw()
@@ -75,7 +55,7 @@ namespace HMCSEngine
             Raylib.CloseWindow();
         }
 
-        public static void DrawTexture(Texture2D texture, Rectangle texturesample, WorldPosition worldposition)
+        public static void DrawTexture(Texture texture, Rectangle texturesample, WorldPosition worldposition)
         {
             ScreenPosition screenposition = (ScreenPosition)(worldposition);
 
@@ -83,7 +63,7 @@ namespace HMCSEngine
 
             Rectangle screenrectangle = new Rectangle(objectorigin, texturesample.Size * WindowScale);
 
-            Raylib.DrawTexturePro(texture, texturesample, screenrectangle, Vector2.Zero, 0, Color.White);
+            Raylib.DrawTexturePro(texture.GetTexture(), texturesample, screenrectangle, Vector2.Zero, 0, Color.White);
         }
 
         public static void DrawText(string text, int fontindex, int fontsize, int spacing, Color colour, WorldPosition position)

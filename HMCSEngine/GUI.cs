@@ -5,7 +5,9 @@ namespace HMCSEngine
 {
     internal static class GUI
     {
-        private static List<GUIElement> Elements = new List<GUIElement>();
+        private static readonly List<GUIElement> Elements = new List<GUIElement>();
+
+        private static MouseGUIEvent CurrentMouseEvents = new MouseGUIEvent(MouseButtons.None, KeyState.Up, ScreenPosition.Zero);
 
         public static void Draw()
         {
@@ -17,16 +19,61 @@ namespace HMCSEngine
 
         public static void Update()
         {
+            CurrentMouseEvents = GetMouseEvents();
 
+            if(CurrentMouseEvents.MouseButton == MouseButtons.None)
+            {
+                return;
+            }
+
+            GUIElement? element = GetElementAtPosition(CurrentMouseEvents.CursorPosition);
+
+            if(element == null)
+            {
+                return;
+            }
+
+            element.MouseHover(CurrentMouseEvents);
+
+            switch (CurrentMouseEvents.MouseButtonState)
+            {
+                case KeyState.Up:
+                    element.MouseUp(CurrentMouseEvents);
+                    break;
+                case KeyState.Down:
+                    element.MouseDown(CurrentMouseEvents);
+                    break;
+                case KeyState.Released:
+                    element.MouseUp(CurrentMouseEvents);
+                    break;
+                case KeyState.Pressed:
+                    element.MouseDown(CurrentMouseEvents);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static GUIElement? GetElementAtPosition(ScreenPosition position)
+        {
+            foreach(GUIElement e in Elements)
+            {
+                if(e.IsPositionInsideRect(position) == false)
+                {
+                    continue;
+                }
+                
+                return e;
+            }
+
+            return null;
         }
 
         private static MouseGUIEvent GetMouseEvents()
         {
-            MouseButtons mousebutton = Inputs.GetMouseButton();
+            MouseButtons button = Inputs.GetMouseButton();
 
-            Vector2 mouseposition = Raylib.GetMousePosition();
-
-            return new MouseGUIEvent(mousebutton, mouseposition, Inputs.MouseDown);
+            return new MouseGUIEvent(button, Inputs.GetMouseButtonState(button), Cursor.Position);
         }
 
         public static void AddElement(GUIElement element)
@@ -44,6 +91,7 @@ namespace HMCSEngine
     {
         public Rectangle Rect;
         public Color ColourTint = Color.White;
+        public int DrawOrder = 0;
 
         public GUIElement(Rectangle rect)
         {
@@ -75,6 +123,14 @@ namespace HMCSEngine
         {
             return;
         }
+
+        public bool IsPositionInsideRect(ScreenPosition position)
+        {
+            ScreenPosition bottomboundary = new ScreenPosition(Rect.x, Rect.y);
+            ScreenPosition topboundary = new ScreenPosition(Rect.x + Rect.Width, Rect.y + Rect.Height);
+
+            return position.x >= bottomboundary.x && position.x <= topboundary.x && position.y >= topboundary.y && position.y <= topboundary.y;
+        }
     }
 
     internal class GUIText : GUIElement
@@ -103,9 +159,9 @@ namespace HMCSEngine
 
     internal class GUIImage : GUIElement
     {
-        public Texture2D Texture;
+        public Texture Texture;
 
-        public GUIImage(Rectangle rect, Texture2D texture) : base(rect)
+        public GUIImage(Rectangle rect, Texture texture) : base(rect)
         {
             Texture = texture;
         }

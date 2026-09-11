@@ -12,8 +12,8 @@ class Program
 
         Fonts.LoadFont(new FontInfo("comic", 0));
 
-        //GUIText text = new GUIText(ScreenPosition.One * 10, "Good morning", 32, 0);
-        //GUI.AddElement(text);
+        GUIButton button = new GUIButton(new Rectangle(10, 10, 30, 30), ClickTest);
+        GUI.AddElement(button);
 
         while (Raylib.WindowShouldClose() == false)
         {
@@ -26,5 +26,10 @@ class Program
         }
 
         HMCS.Quit();
+    }
+
+    public static void ClickTest()
+    {
+        Debug.InfoLog("Click (:");
     }
 }

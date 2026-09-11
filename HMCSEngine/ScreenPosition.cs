@@ -32,7 +32,10 @@ namespace HMCSEngine
         {
             return new ScreenPosition(left.x * right.x, left.y * right.y);
         }
-
+        public static ScreenPosition operator /(ScreenPosition left, ScreenPosition right)
+        {
+            return new ScreenPosition(left.x / right.x, left.y / right.y);
+        }
         public static ScreenPosition operator *(ScreenPosition left, int right)
         {
             return new ScreenPosition(left.x * right, left.y * right);
