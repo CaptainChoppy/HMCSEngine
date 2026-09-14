@@ -46,6 +46,7 @@ namespace HMCSEngine
                 Audio.Initialize();
 
                 Tilemap.Initialize();
+                HMCSLevelData.LoadLevelData();
                 HMCSEntityData.LoadEntityData();
 
                 Raylib.SetExitKey(KeyboardKey.Escape);

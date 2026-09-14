@@ -11,15 +11,16 @@ namespace HMCSEngine
 
         public static void LoadEntityData()
         {
-            JSONEntityDataArray? entitydata;
+            JSONEntityDataArrayObject? entitydata;
 
             try
             {
-                entitydata = JSONReader.Read<JSONEntityDataArray>(Files.EntityDataDirectory);
+                entitydata = JSONReader.Read<JSONEntityDataArrayObject>(Files.EntityDataDirectory);
 
                 if (entitydata == null)
                 {
-                    throw new NullReferenceException("JSONReader.Read returned null.");
+                    Debug.FatalLog($"JSONReader returned null when reading {Files.EntityDataDirectory}");
+                    throw new NullReferenceException();
                 }
             }
             catch(Exception e)
@@ -28,7 +29,7 @@ namespace HMCSEngine
                 throw;
             }
 
-            EntityData = JSONEntityDataArray.CreateEntityDataFromJSON(entitydata);
+            EntityData = JSONEntityDataArrayObject.CreateEntityDataFromJSON(entitydata);
         }
 
         public static EntityData GetEntityData(EntityDataID? id)
@@ -101,16 +102,16 @@ namespace HMCSEngine
         }
     }
 
-    internal sealed class JSONEntityDataArray
+    internal sealed class JSONEntityDataArrayObject
     {
-        public readonly JSONEntityData[] Entities;
+        public readonly JSONEntityDataObject[] Entities;
 
-        public JSONEntityDataArray(JSONEntityData[] entities)
+        public JSONEntityDataArrayObject(JSONEntityDataObject[] entities)
         {
             Entities = entities;
         }
 
-        public static EntityData[] CreateEntityDataFromJSON(JSONEntityDataArray json)
+        public static EntityData[] CreateEntityDataFromJSON(JSONEntityDataArrayObject json)
         {
             EntityData[] entitydata = new EntityData[HMCSEntityData.MaxUniqueEntities];
 
@@ -118,7 +119,7 @@ namespace HMCSEngine
 
             for(int i = 0; i < json.Entities.Length; i++)
             {
-                JSONEntityData entity = json.Entities[i];
+                JSONEntityDataObject entity = json.Entities[i];
 
                 if (loadedids.Contains(entity.ID) == true)
                 {
@@ -134,7 +135,7 @@ namespace HMCSEngine
             return entitydata;
         }
     }
-    internal sealed class JSONEntityData
+    internal sealed class JSONEntityDataObject
     {
         public readonly byte ID;
         public readonly string Name;
@@ -142,7 +143,7 @@ namespace HMCSEngine
         public readonly int RenderMode;
         public readonly int Behaviour;
 
-        public JSONEntityData(byte id, string name, int rendermode, int behaviour)
+        public JSONEntityDataObject(byte id, string name, int rendermode, int behaviour)
         {
             ID = id;
             Name = name;

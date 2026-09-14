@@ -1,0 +1,19 @@
+{
+	"Levels":
+	[
+		{
+			"ID": "0",
+			"Name": "Test level0",
+			
+			"TileAnimationFrameCount":8,
+			"TileAnimationSpeed":1
+		},
+		{
+			"ID": "1",
+			"Name": "Test level1",
+			
+			"TileAnimationFrameCount":4,
+			"TileAnimationSpeed":2
+		}
+	]
+}

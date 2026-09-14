@@ -1,13 +1,11 @@
-﻿using System.Net.Http.Headers;
-
-namespace HMCSEngine
+﻿namespace HMCSEngine
 {
     internal static class Files
     {
         public const string ExtentionSeperator = ".";
 
         public const string ImageFileExtention = ExtentionSeperator + "png";
-        public const string TextFileExtention = ExtentionSeperator + "txt";
+        //public const string TextFileExtention = ExtentionSeperator + "txt";
         public const string SoundFileExtention = ExtentionSeperator + "wav";
         public const string TilemapFileExtention = ExtentionSeperator + "tlm";
         public const string JSONFileExtention = ExtentionSeperator + "json";
@@ -17,6 +15,8 @@ namespace HMCSEngine
 
         public static string ProjectDirectory => Path.Combine(ProgramDirectory, "HMCS\\");
         public static string LevelsDirectory => Path.Combine(ProjectDirectory, "levels\\");
+
+        public static string LevelDataPath => Path.Combine(LevelsDirectory, "leveldata" + JSONFileExtention);
 
         public static string CurrentLevelDirectory => Path.Combine(LevelsDirectory, HMCS.LevelIndex.ToString());
 

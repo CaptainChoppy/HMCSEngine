@@ -1,1 +1,0 @@
-TileAnimationTime(frames):45
