@@ -1,6 +1,6 @@
 ﻿namespace HMCSEngine
 {
-    internal static class HMCSLevelData
+    public static class HMCSLevelData
     {
         public const int MaxUniqueLevels = 256;
 
@@ -37,7 +37,7 @@
         }
     }
 
-    internal struct LevelDataID
+    public struct LevelDataID
     {
         public readonly byte ID;
 
@@ -47,7 +47,7 @@
         }
     }
 
-    internal class LevelData
+    public class LevelData
     {
         public readonly string Name;
         public readonly int TileAnimationFrameCount;
@@ -65,7 +65,7 @@
         }
     }
 
-    internal sealed class JSONLevelDataArrayObject
+    public sealed class JSONLevelDataArrayObject
     {
         public readonly JSONLevelDataObject[] Levels;
 
@@ -99,7 +99,7 @@
         }
     }
 
-    internal sealed class JSONLevelDataObject
+    public sealed class JSONLevelDataObject
     {
         public readonly int ID;
         public readonly string Name;

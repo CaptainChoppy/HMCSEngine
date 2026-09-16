@@ -2,7 +2,7 @@
 
 namespace HMCSEngine
 {
-    internal struct WorldPosition
+    public struct WorldPosition
     {
         public int x;
         public int y;
@@ -49,8 +49,8 @@ namespace HMCSEngine
 
         public static explicit operator WorldPosition(ScreenPosition position)
         {
-            return new WorldPosition(Maths.FloorToInt(position.x / Renderer.WindowScale) + Viewport.Position.x,
-                Maths.FloorToInt((position.y - Renderer.WindowHeight) / -Renderer.WindowScale) + Viewport.Position.y);
+            return new WorldPosition(Maths.FloorToInt(position.x / Screen.WindowScale) + Viewport.Position.x,
+                Maths.FloorToInt((position.y - Screen.Height) / -Screen.WindowScale) + Viewport.Position.y);
         }
         public static explicit operator WorldPosition(TilePosition position)
         {

@@ -1,6 +1,6 @@
 ﻿namespace HMCSEngine
 {
-    internal struct TilePosition
+    public struct TilePosition
     {
         public const int MinX = 0;
         public const int MaxX = 256 - 1;

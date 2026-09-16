@@ -1,6 +1,6 @@
 ﻿namespace HMCSEngine
 {
-    internal struct BackgroundPosition
+    public struct BackgroundPosition
     {
         public int x;
         public int y;

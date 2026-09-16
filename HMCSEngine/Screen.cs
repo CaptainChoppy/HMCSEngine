@@ -4,7 +4,7 @@ namespace HMCSEngine
 {
     internal static class Screen
     {
-       private static float windowscale = 1.0f;
+        private static float windowscale = 1.0f;
         public static float WindowScale
         {
             get
@@ -18,17 +18,17 @@ namespace HMCSEngine
             }
         }
 
-        public const int ReferenceWindowWidth = 320;
-        public const int ReferenceWindowHeight = 240;
+        public const int ReferenceWidth = 320;
+        public const int ReferenceHeight = 240;
 
-        public static int Width => (int)(ReferenceWindowWidth * WindowScale);
-        public static int Height => (int)(ReferenceWindowHeight * WindowScale);
+        public static int Width => (int)(ReferenceWidth * WindowScale);
+        public static int Height => (int)(ReferenceHeight * WindowScale);
 
         public static ScreenPosition ScreenDimentions 
         { 
             get
             {
-                return new ScreenPosition((int)(Width), (int)(Height));
+                return new ScreenPosition(Width, Height);
             } 
         }
     }

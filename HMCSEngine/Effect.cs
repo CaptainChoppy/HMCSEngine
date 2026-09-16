@@ -24,7 +24,7 @@ namespace HMCSEngine
 
         public override void Draw()
         {
-            Raylib.DrawRectangle(0, 0, Renderer.WindowWidth, Renderer.WindowHeight, Colour);
+            Raylib.DrawRectangle(0, 0, Screen.Width, Screen.Height, Colour);
         }
     }
 }

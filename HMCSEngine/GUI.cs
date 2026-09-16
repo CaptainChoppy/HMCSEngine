@@ -1,14 +1,13 @@
 ﻿using Raylib_cs;
 using System.Numerics;
-using System.Xml.Linq;
 
 namespace HMCSEngine
 {
-    internal static class GUI
+    public static class GUI
     {
         private static readonly List<GUIElement> Elements = new List<GUIElement>();
 
-        private static MouseGUIEvent CurrentMouseEvents = new MouseGUIEvent(MouseButtons.None, KeyState.Up, ScreenPosition.Zero);
+        private static MouseEvent CurrentMouseEvents = new MouseEvent(MouseButtons.None, KeyState.Up, ScreenPosition.Zero);
 
         public static void Draw()
         {
@@ -22,10 +21,7 @@ namespace HMCSEngine
         {
             CurrentMouseEvents = GetMouseEvents();
 
-            if(CurrentMouseEvents.MouseButton == MouseButtons.None)
-            {
-                return;
-            }
+            Debug.InfoLog(CurrentMouseEvents);
 
             foreach(GUIElement e in Elements)
             {
@@ -33,25 +29,27 @@ namespace HMCSEngine
             }
         }
 
-        private static MouseGUIEvent GetMouseEvents()
+        private static MouseEvent GetMouseEvents()
         {
             MouseButtons button = Inputs.GetMouseButton();
 
-            return new MouseGUIEvent(button, Inputs.GetMouseButtonState(button), Cursor.Position);
+            return new MouseEvent(button, Inputs.GetMouseButtonState(button), Cursor.Position);
         }
 
         public static void AddElement(GUIElement element)
         {
             Elements.Add(element);
+            Debug.InfoLog("Added GUIElement");
         }
 
         public static void RemoveElement(GUIElement element)
         {
             Elements.Remove(element);
+            Debug.InfoLog("Removed GUIElement");
         }
     }
 
-    internal enum GUIElementHoverState : int
+    public enum GUIElementHoverState : int
     {
         Out,
         Enter,
@@ -65,7 +63,7 @@ namespace HMCSEngine
         public Color ColourTint = Color.White;
         public int DrawOrder = 0;
 
-        public GUIElementHoverState HoverState { get; private set; }
+        public GUIElementHoverState HoverState { get; private set; } = GUIElementHoverState.Out;
 
         public GUIElement(Rectangle rect)
         {
@@ -75,10 +73,10 @@ namespace HMCSEngine
 
         public virtual void Draw()
         {
-            Raylib.DrawRectanglePro(Rect, Vector2.Zero, 0, Color.White);
+            Renderer.DrawRectangle(Rect, ColourTint);
         }
 
-        public void CursorEvents(MouseGUIEvent mouseevents)
+        public void CursorEvents(MouseEvent mouseevents)
         {
             if (IsPositionInsideRect(mouseevents.CursorPosition) == true)
             {
@@ -86,24 +84,29 @@ namespace HMCSEngine
                 {
                     case GUIElementHoverState.Out:
                         HoverState = GUIElementHoverState.Enter;
-                        MouseEnter(mouseevents);
+                        CursorEnter(mouseevents);
                         break;
                     case GUIElementHoverState.Enter:
                         HoverState = GUIElementHoverState.Hover;
-                        MouseHover(mouseevents);
+                        CursorHover(mouseevents);
                         break;
                     case GUIElementHoverState.Hover:
                         HoverState = GUIElementHoverState.Hover;
-                        MouseHover(mouseevents);
+                        CursorHover(mouseevents);
                         break;
                     case GUIElementHoverState.Exit:
                         HoverState = GUIElementHoverState.Enter;
-                        MouseEnter(mouseevents);
+                        CursorEnter(mouseevents);
                         break;
                     default:
                         Debug.WarningLog($"GUIElement had an invalid GUIElementHoverState : {HoverState}");
                         HoverState = GUIElementHoverState.Out;
                         break;
+                }
+
+                if(HoverState == GUIElementHoverState.Hover && mouseevents.MouseDown == true)
+                {
+                    MouseDown(mouseevents);
                 }
 
                 return;
@@ -116,11 +119,11 @@ namespace HMCSEngine
                     break;
                 case GUIElementHoverState.Enter:
                     HoverState = GUIElementHoverState.Exit;
-                    MouseExit(mouseevents);
+                    CursorExit(mouseevents);
                     break;
                 case GUIElementHoverState.Hover:
                     HoverState = GUIElementHoverState.Exit;
-                    MouseExit(mouseevents);
+                    CursorExit(mouseevents);
                     break;
                 case GUIElementHoverState.Exit:
                     HoverState = GUIElementHoverState.Out;
@@ -130,72 +133,36 @@ namespace HMCSEngine
                     HoverState = GUIElementHoverState.Out;
                     break;
             }
+
         }
 
-        public virtual void MouseDown(MouseGUIEvent mouseevents)
+        public virtual void MouseDown(MouseEvent mouseevents)
         {
             return;
         }
-        public virtual void MouseUp(MouseGUIEvent mouseevents)
+        public virtual void MouseUp(MouseEvent mouseevents)
         {
             return;
         }
-        public virtual void MouseEnter(MouseGUIEvent mouseevents)
+        public virtual void CursorEnter(MouseEvent mouseevents)
         {
             return;
         }
-        public virtual void MouseExit(MouseGUIEvent mouseevents)
+        public virtual void CursorExit(MouseEvent mouseevents)
         {
             return;
         }
-        public virtual void MouseHover(MouseGUIEvent mouseevents)
+        public virtual void CursorHover(MouseEvent mouseevents)
         {
             return;
         }
 
         public bool IsPositionInsideRect(ScreenPosition position)
         {
-            ScreenPosition bottomboundary = new ScreenPosition(Rect.x, Rect.y);
-            ScreenPosition topboundary = new ScreenPosition(Rect.x + Rect.Width, Rect.y + Rect.Height);
+            ScreenPosition bottomboundary = new ScreenPosition((int)(Rect.X), (int)(Rect.Y));
+            ScreenPosition topboundary = new ScreenPosition((int)(Rect.X + Rect.Width), (int)(Rect.Y + Rect.Height));
 
-            return position.x >= bottomboundary.x && position.x <= topboundary.x && position.y >= topboundary.y && position.y <= topboundary.y;
-        }
-    }
-
-    internal class GUIText : GUIElement
-    {
-        public string Text;
-        public int FontSize;
-        public int Spacing = 1;
-
-        public int FontIndex;
-
-        public ScreenPosition Position;
-
-        public GUIText(ScreenPosition position, string text, int fontsize, int fontindex) : base(new Rectangle(Vector2.Zero, Vector2.Zero))
-        {
-            Position = position;
-            Text = text;
-            FontSize = fontsize;
-            FontIndex = fontindex;
-        }
-
-        public override void Draw()
-        {
-            Renderer.DrawText(Text, FontIndex, FontSize, Spacing, ColourTint, Position);
-        }
-    }
-
-    public abstract class GUIButton : GUIElement
-    {
-        public GUIButton(Rectangle rect) : base(rect)
-        {
-
-        }
-
-        public override void Draw()
-        {
-            Raylib.DrawRectanglePro(Rect, Vector2.Zero, 0, ColourTint);
+            return (position.x >= bottomboundary.x) && (position.x <= topboundary.x) && (position.y >= topboundary.y) && (position.y <= topboundary.y);
         }
     }
 }

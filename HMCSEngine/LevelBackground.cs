@@ -36,7 +36,7 @@ namespace HMCSEngine
             {
                 for (int y = backgroundposition.y - 1; y <= backgroundposition.y + 1; y++)
                 {
-                    Renderer.DrawTexture(Background.GetTexture(), new Rectangle(Vector2.Zero, new Vector2(2, 1) * TextureHeight), (WorldPosition)(new BackgroundPosition(x, y)));
+                    Renderer.DrawTexture(Background, new Rectangle(Vector2.Zero, new Vector2(2, 1) * TextureHeight), (WorldPosition)(new BackgroundPosition(x, y)));
                 }
             }
         }

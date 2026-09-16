@@ -5,7 +5,7 @@
         public const string ExtentionSeperator = ".";
 
         public const string ImageFileExtention = ExtentionSeperator + "png";
-        //public const string TextFileExtention = ExtentionSeperator + "txt";
+        public const string TextFileExtention = ExtentionSeperator + "txt";
         public const string SoundFileExtention = ExtentionSeperator + "wav";
         public const string TilemapFileExtention = ExtentionSeperator + "tlm";
         public const string JSONFileExtention = ExtentionSeperator + "json";

@@ -66,14 +66,14 @@ namespace HMCSEngine
 
             if (Inputs.KeyPressed(VKeyCodes.OEMEquals))
             {
-                Renderer.WindowScale *= 2.0f;
-                Debug.InfoLog($"Set window scale to {Renderer.WindowScale}");
+                Screen.WindowScale *= 2.0f;
+                Debug.InfoLog($"Set window scale to {Screen.WindowScale}");
             }
 
             if (Raylib.IsKeyPressed(KeyboardKey.Minus))
             {
-                Renderer.WindowScale /= 2.0f;
-                Debug.InfoLog($"Set window scale to {Renderer.WindowScale}");
+                Screen.WindowScale /= 2.0f;
+                Debug.InfoLog($"Set window scale to {Screen.WindowScale}");
             }
         }
     }

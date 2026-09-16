@@ -5,8 +5,8 @@ namespace HMCSEngine
 {
     internal static class Renderer
     {
-        public static int TileHorizontalViewDistance => Screen.ReferenceWindowWidth / 16;
-        public static int TileVerticalViewDistance => Screen.ReferenceWindowHeight / 16;
+        public static int TileHorizontalViewDistance => Screen.ReferenceWidth / 16;
+        public static int TileVerticalViewDistance => Screen.ReferenceHeight / 16;
 
         public static bool ToggleDowner = true;
         public static bool ToggleUpper = true;
@@ -45,7 +45,7 @@ namespace HMCSEngine
                 Level.DrawLayer(TileLayerName.Higher);
             }
 
-            //GUI.Draw();
+            GUI.Draw();
 
             Raylib.EndDrawing();
         }
@@ -55,24 +55,31 @@ namespace HMCSEngine
             Raylib.CloseWindow();
         }
 
+        public static void DrawRectangle(Rectangle rect, Color colour)
+        {
+            Rectangle screenrectangle = new Rectangle(rect.Position * Screen.WindowScale, rect.Size * Screen.WindowScale);
+            
+            Raylib.DrawRectanglePro(screenrectangle, Vector2.Zero, 0, colour);
+        }
+
         public static void DrawTexture(Texture texture, Rectangle texturesample, WorldPosition worldposition)
         {
             ScreenPosition screenposition = (ScreenPosition)(worldposition);
 
             ScreenPosition objectorigin = screenposition + (ScreenPosition.Down * Maths.FloorToInt(texturesample.Size.Y));
 
-            Rectangle screenrectangle = new Rectangle(objectorigin, texturesample.Size * WindowScale);
+            Rectangle screenrectangle = new Rectangle(objectorigin, texturesample.Size * Screen.WindowScale);
 
             Raylib.DrawTexturePro(texture.GetTexture(), texturesample, screenrectangle, Vector2.Zero, 0, Color.White);
         }
 
         public static void DrawText(string text, int fontindex, int fontsize, int spacing, Color colour, WorldPosition position)
         {
-            Raylib.DrawTextPro(Fonts.GetFont(fontindex), text, (ScreenPosition)(position), Vector2.Zero, 0.0f, fontsize * WindowScale, spacing * WindowScale, colour);
+            Raylib.DrawTextPro(Fonts.GetFont(fontindex), text, (ScreenPosition)(position), Vector2.Zero, 0.0f, fontsize * Screen.WindowScale, spacing * Screen.WindowScale, colour);
         }
         public static void DrawText(string text, int fontindex, int fontsize, int spacing, Color colour, ScreenPosition position)
         {
-            Raylib.DrawTextPro(Fonts.GetFont(fontindex), text, position, Vector2.Zero, 0.0f, fontsize * WindowScale, spacing * WindowScale, colour);
+            Raylib.DrawTextPro(Fonts.GetFont(fontindex), text, position, Vector2.Zero, 0.0f, fontsize * Screen.WindowScale, spacing * Screen.WindowScale, colour);
         }
 
         public static void DrawScreenPixel(ScreenPosition position, Color color)

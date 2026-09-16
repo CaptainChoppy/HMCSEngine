@@ -4,11 +4,19 @@ namespace HMCSEngine
 {
     internal static class Cursor
     {
+        public static ScreenPosition TruePosition
+        {
+            get
+            {
+                return Raylib.GetMousePosition();
+            }
+        }
+
         public static ScreenPosition Position
         {
             get
             {
-                return (ScreenPosition)(Raylib.GetMousePosition());
+                return (TruePosition / Screen.WindowScale);
             }
         }
 

@@ -23,7 +23,12 @@ namespace HMCSEngine
 
         public static Font GetFont(int slotindex)
         {
-            if(slotindex >= FontCount)
+            if(slotindex == -1)
+            {
+                return Raylib.GetFontDefault();
+            }
+
+            if (slotindex >= FontCount)
             {
                 Debug.WarningLog($"Font index ({slotindex}) was out of range");
                 return Raylib.GetFontDefault();

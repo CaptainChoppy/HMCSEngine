@@ -84,7 +84,7 @@ namespace HMCSEngine
 
             Rectangle rect = new Rectangle(atlascoordinates, tilesize);
 
-            Renderer.DrawTexture(Atlas.GetTexture(), rect, position);
+            Renderer.DrawTexture(Atlas, rect, position);
         }
 
         public static Vector2 IDToAtlasCoordinates(byte id, SpriteRenderMode rendermode)

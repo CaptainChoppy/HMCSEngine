@@ -2,13 +2,13 @@
 
 namespace HMCSEngine
 {
-    internal static class Audio
+    public static class Audio
     {
         public const int MaxSoundSlots = 32;
         public static readonly SoundSlot[] SoundSlots = new SoundSlot[MaxSoundSlots];
     }
 
-    internal sealed class SoundSlot
+    public sealed class SoundSlot
     {
         public AudioTrack Track;
 
@@ -18,7 +18,7 @@ namespace HMCSEngine
         }
     }
 
-    internal struct AudioTrack
+    public struct AudioTrack
     {
         private readonly Queue<SoundQueueInfo> SoundStack = new Queue<SoundQueueInfo>();
         public bool Paused = false;
@@ -39,7 +39,7 @@ namespace HMCSEngine
         }
     }
 
-    internal struct SoundQueueInfo
+    public struct SoundQueueInfo
     {
         public readonly string Name;
         public readonly uint Time;

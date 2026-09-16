@@ -2,7 +2,7 @@
 
 namespace HMCSEngine
 {
-    internal struct ScreenPosition
+    public struct ScreenPosition
     {
         public int x;
         public int y;
@@ -40,6 +40,10 @@ namespace HMCSEngine
         {
             return new ScreenPosition(left.x * right, left.y * right);
         }
+        public static ScreenPosition operator /(ScreenPosition left, float right)
+        {
+            return new ScreenPosition((int)(left.x / right), (int)(left.y / right));
+        }
 
         public static bool operator ==(ScreenPosition a, ScreenPosition b)
         {
@@ -52,17 +56,17 @@ namespace HMCSEngine
 
         public static implicit operator Vector2(ScreenPosition position)
         {
-            return new Vector2(position.x, position.y) * Renderer.WindowScale;
+            return new Vector2(position.x, position.y) * Screen.WindowScale;
         }
         public static implicit operator ScreenPosition(Vector2 position)
         {
-            return new Vector2(position.X, position.Y) * Renderer.WindowScale;
+            return new ScreenPosition((int)(position.X), (int)(position.Y)) * (int)(Screen.WindowScale);
         }
 
         public static explicit operator ScreenPosition(WorldPosition position)
         {
             return new ScreenPosition(position.x - Viewport.Position.x,
-             Renderer.ReferenceWindowHeight - (position.y - Viewport.Position.y));
+             Screen.ReferenceHeight - (position.y - Viewport.Position.y));
         }
         public static explicit operator ScreenPosition(BackgroundPosition position)
         {

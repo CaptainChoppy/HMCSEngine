@@ -43,7 +43,7 @@ namespace HMCSEngine
 
                 Renderer.CreateWindow();
                 EffectsLayers.Initalize();
-                Audio.Initialize();
+                //Audio.Initialize();
 
                 Tilemap.Initialize();
                 HMCSLevelData.LoadLevelData();
@@ -85,9 +85,9 @@ namespace HMCSEngine
 
             Player.Update();
             Level.Update();
-            Audio.Update();
+            //Audio.Update();
             EffectsLayers.Update();
-            //GUI.Update();
+            GUI.Update();
             Renderer.Draw();
 
             Time.GlobalFrameTime++;

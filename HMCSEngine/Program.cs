@@ -10,9 +10,9 @@ class Program
 
         HMCS.LoadLevel(0);
 
-        Fonts.LoadFont(new FontInfo("comic", 0));
+        //Fonts.LoadFont(new FontInfo("comic", 0));
 
-        TestButton button = new TestButton(new Rectangle(10, 10, 10, 10));
+        TestButton button = new TestButton(new Rectangle(16, 16, 16, 16));
 
         while (Raylib.WindowShouldClose() == false)
         {
@@ -33,26 +33,30 @@ class Program
     }
 }
 
-internal class TestButton : GUIButton
+class TestButton : GUIElement
 {
     public TestButton(Rectangle rect) : base(rect)
     {
         ColourTint = new Color(0xFF, 0x00, 0xFF, 0xFF);
     }
 
-    public override void MouseEnter(MouseGUIEvent mouseevents)
+    public override void MouseDown(MouseEvent mouseevents)
+    {
+        Debug.InfoLog("TEEHEE");
+    }
+
+    public override void CursorEnter(MouseEvent mouseevents)
     {
         ColourTint = new Color(0xFF, 0x00, 0x00, 0xFF);
     }
 
-    public override void MouseHover(MouseGUIEvent mouseevents)
+    public override void CursorHover(MouseEvent mouseevents)
     {
         ColourTint = new Color(0x00, 0xFF, 0x00, 0xFF);
     }
 
-    public override void MouseExit(MouseGUIEvent mouseevents)
+    public override void CursorExit(MouseEvent mouseevents)
     {
         ColourTint = new Color(0x00, 0x00, 0xFF, 0xFF);
-
     }
 }

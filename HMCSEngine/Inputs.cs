@@ -2,7 +2,7 @@
 
 namespace HMCSEngine
 {
-    internal static class Inputs
+    public static class Inputs
     {
         private static readonly KeyState[] KeyStates = new KeyState[256];
 
@@ -98,9 +98,13 @@ namespace HMCSEngine
 
         public static KeyState GetMouseButtonState(MouseButtons button)
         {
-            if((int)(button) > 6 || (int)(button) == 3 || (int)(button) <= 0)
+            if((int)(button) > 6 || (int)(button) == 3)
             {
                 Debug.WarningLog($"Tried to get keystate for mouse button {button} which does not exist");
+                return KeyState.Up;
+            }
+            else if((int)(button) <= 0)
+            {
                 return KeyState.Up;
             }
 
@@ -133,7 +137,7 @@ namespace HMCSEngine
         }
     }
 
-    internal enum KeyState : int
+    public enum KeyState : int
     {
         Up = 0,
         Down,

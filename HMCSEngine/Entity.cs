@@ -52,7 +52,7 @@ namespace HMCSEngine
                 idtext = DataID.ToString();
             }
 
-            Renderer.DrawText(idtext, 0, 8, 1, ColorTint, Position);
+            Renderer.DrawText(idtext, -1, 8, 1, ColorTint, Position);
         }
 
         public virtual void Update()

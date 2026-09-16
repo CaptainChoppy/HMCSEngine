@@ -55,7 +55,7 @@ namespace HMCSEngine
                 return;
             }
 
-            Renderer.DrawTexture(atlas.Atlas.GetTexture(), texturerect, (WorldPosition)(positon));
+            Renderer.DrawTexture(atlas.Atlas, texturerect, (WorldPosition)(positon));
         }
     }
 }

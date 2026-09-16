@@ -1,25 +1,32 @@
 ﻿namespace HMCSEngine
 {
-    internal abstract class GUIEvent
+    public abstract class GUIEvent
     {
 
     }
 
-    internal sealed class MouseGUIEvent : GUIEvent
+    public sealed class MouseEvent : GUIEvent
     {
         public readonly MouseButtons MouseButton;
         public readonly KeyState MouseButtonState;
         public readonly ScreenPosition CursorPosition;
 
-        public MouseGUIEvent(MouseButtons mousebutton, KeyState buttonstate, ScreenPosition cursorposition) : base()
+        public bool MouseDown => (MouseButtonState == KeyState.Down) || (MouseButtonState == KeyState.Pressed);
+
+        public MouseEvent(MouseButtons mousebutton, KeyState buttonstate, ScreenPosition cursorposition) : base()
         {
             MouseButton = mousebutton;
             MouseButtonState = buttonstate;
             CursorPosition = cursorposition;
         }
+
+        public override string ToString()
+        {
+            return $"MouseEvents (MouseButton:{MouseButton}, MouseButtonState:{MouseButtonState}, CursorPosition:{CursorPosition})";
+        }
     }
 
-    internal enum MouseButtons
+    public enum MouseButtons
     {
         None = 0,
         Left = 1,
