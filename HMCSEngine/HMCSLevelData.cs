@@ -12,11 +12,13 @@
 
             try
             {
-                leveldata = JSONReader.Read<JSONLevelDataArrayObject>(Files.LevelDataPath);
+                string path = Files.LevelDataPath;
+
+                leveldata = JSONReader.Read<JSONLevelDataArrayObject>(path);
 
                 if (leveldata == null)
                 {
-                    Debug.FatalLog($"JSONReader returned null when reading {Files.LevelDataPath}");
+                    Debug.FatalLog($"JSONReader returned null when reading {path}");
                     throw new NullReferenceException();
                 }
             }
@@ -50,12 +52,16 @@
         public readonly string Name;
         public readonly int TileAnimationFrameCount;
         public readonly int TileAnimationSpeed;
+        public readonly float ParalaxMagnitude;
+        public readonly bool LoopOver;
 
-        public LevelData(string name, int tileanimationframecount, int tileanimationspeed)
+        public LevelData(string name, int tileanimationframecount, int tileanimationspeed, float paralaxmagnitude, bool loopover)
         {
             Name = name;
             TileAnimationFrameCount = tileanimationframecount;
             TileAnimationSpeed = tileanimationspeed;
+            ParalaxMagnitude = paralaxmagnitude;
+            LoopOver = loopover;
         }
     }
 
@@ -86,7 +92,7 @@
 
                 loadedids.Add(level.ID);
 
-                leveldata[level.ID] = new LevelData(level.Name, level.TileAnimationFrameCount, level.TileAnimationSpeed);
+                leveldata[level.ID] = new LevelData(level.Name, level.TileAnimationFrameCount, level.TileAnimationSpeed, level.ParalaxMagnitude, level.LoopOver);
             }
 
             return leveldata;
@@ -99,13 +105,17 @@
         public readonly string Name;
         public readonly int TileAnimationFrameCount;
         public readonly int TileAnimationSpeed;
+        public readonly float ParalaxMagnitude;
+        public readonly bool LoopOver;
 
-        public JSONLevelDataObject(int id, string name, int tileanimationframecount, int tileanimationspeed)
+        public JSONLevelDataObject(int id, string name, int tileanimationframecount, int tileanimationspeed, float paralaxmagnitude, bool loopover)
         {
             ID = id;
             Name = name;
             TileAnimationFrameCount = tileanimationframecount;
             TileAnimationSpeed = tileanimationspeed;
+            ParalaxMagnitude = paralaxmagnitude;
+            LoopOver = loopover;
         }
     }
 }

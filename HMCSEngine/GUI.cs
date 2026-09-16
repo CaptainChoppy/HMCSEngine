@@ -1,5 +1,6 @@
 ﻿using Raylib_cs;
 using System.Numerics;
+using System.Xml.Linq;
 
 namespace HMCSEngine
 {
@@ -26,47 +27,10 @@ namespace HMCSEngine
                 return;
             }
 
-            GUIElement? element = GetElementAtPosition(CurrentMouseEvents.CursorPosition);
-
-            if(element == null)
-            {
-                return;
-            }
-
-            element.MouseHover(CurrentMouseEvents);
-
-            switch (CurrentMouseEvents.MouseButtonState)
-            {
-                case KeyState.Up:
-                    element.MouseUp(CurrentMouseEvents);
-                    break;
-                case KeyState.Down:
-                    element.MouseDown(CurrentMouseEvents);
-                    break;
-                case KeyState.Released:
-                    element.MouseUp(CurrentMouseEvents);
-                    break;
-                case KeyState.Pressed:
-                    element.MouseDown(CurrentMouseEvents);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private static GUIElement? GetElementAtPosition(ScreenPosition position)
-        {
             foreach(GUIElement e in Elements)
             {
-                if(e.IsPositionInsideRect(position) == false)
-                {
-                    continue;
-                }
-                
-                return e;
+                e.CursorEvents(CurrentMouseEvents);
             }
-
-            return null;
         }
 
         private static MouseGUIEvent GetMouseEvents()
@@ -87,20 +51,85 @@ namespace HMCSEngine
         }
     }
 
-    internal abstract class GUIElement
+    internal enum GUIElementHoverState : int
+    {
+        Out,
+        Enter,
+        Hover,
+        Exit
+    }
+
+    public abstract class GUIElement
     {
         public Rectangle Rect;
         public Color ColourTint = Color.White;
         public int DrawOrder = 0;
 
+        public GUIElementHoverState HoverState { get; private set; }
+
         public GUIElement(Rectangle rect)
         {
             Rect = rect;
+            GUI.AddElement(this);
         }
 
         public virtual void Draw()
         {
             Raylib.DrawRectanglePro(Rect, Vector2.Zero, 0, Color.White);
+        }
+
+        public void CursorEvents(MouseGUIEvent mouseevents)
+        {
+            if (IsPositionInsideRect(mouseevents.CursorPosition) == true)
+            {
+                switch(HoverState)
+                {
+                    case GUIElementHoverState.Out:
+                        HoverState = GUIElementHoverState.Enter;
+                        MouseEnter(mouseevents);
+                        break;
+                    case GUIElementHoverState.Enter:
+                        HoverState = GUIElementHoverState.Hover;
+                        MouseHover(mouseevents);
+                        break;
+                    case GUIElementHoverState.Hover:
+                        HoverState = GUIElementHoverState.Hover;
+                        MouseHover(mouseevents);
+                        break;
+                    case GUIElementHoverState.Exit:
+                        HoverState = GUIElementHoverState.Enter;
+                        MouseEnter(mouseevents);
+                        break;
+                    default:
+                        Debug.WarningLog($"GUIElement had an invalid GUIElementHoverState : {HoverState}");
+                        HoverState = GUIElementHoverState.Out;
+                        break;
+                }
+
+                return;
+            }
+
+            switch (HoverState)
+            {
+                case GUIElementHoverState.Out:
+                    HoverState = GUIElementHoverState.Out;
+                    break;
+                case GUIElementHoverState.Enter:
+                    HoverState = GUIElementHoverState.Exit;
+                    MouseExit(mouseevents);
+                    break;
+                case GUIElementHoverState.Hover:
+                    HoverState = GUIElementHoverState.Exit;
+                    MouseExit(mouseevents);
+                    break;
+                case GUIElementHoverState.Exit:
+                    HoverState = GUIElementHoverState.Out;
+                    break;
+                default:
+                    Debug.WarningLog($"GUIElement had an invalid GUIElementHoverState : {HoverState}");
+                    HoverState = GUIElementHoverState.Out;
+                    break;
+            }
         }
 
         public virtual void MouseDown(MouseGUIEvent mouseevents)
@@ -157,43 +186,16 @@ namespace HMCSEngine
         }
     }
 
-    internal class GUIImage : GUIElement
+    public abstract class GUIButton : GUIElement
     {
-        public Texture Texture;
-
-        public GUIImage(Rectangle rect, Texture texture) : base(rect)
+        public GUIButton(Rectangle rect) : base(rect)
         {
-            Texture = texture;
-        }
 
-        public override void Draw()
-        {
-            Raylib.DrawTexturePro(Texture, new Rectangle(0, 0, Texture.Width, Texture.Height), Rect, Vector2.Zero, 0, ColourTint);
-        }
-    }
-
-    internal class GUIButton : GUIElement
-    {
-        public Action ClickEvent;
-
-        public GUIButton(Rectangle rect, Action clickevent) : base(rect)
-        {
-            ClickEvent = clickevent;
         }
 
         public override void Draw()
         {
             Raylib.DrawRectanglePro(Rect, Vector2.Zero, 0, ColourTint);
-        }
-
-        public override void MouseDown(MouseGUIEvent mouseevents)
-        {
-            if(mouseevents.MouseButton != MouseButtons.Left)
-            {
-                return;
-            }
-
-            ClickEvent();
         }
     }
 }
