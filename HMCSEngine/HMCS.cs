@@ -18,6 +18,8 @@ namespace HMCSEngine
 
         public static bool Pause = false;
 
+        public static bool Running = false;
+
         public static void SetWindowTitle(string title, bool includeversion)
         {
             WindowTitle = "";
@@ -33,6 +35,8 @@ namespace HMCSEngine
 
         public static void Initalize()
         {
+            Running = true;
+
             Raylib.SetTraceLogLevel(TraceLogLevel.Warning);
 
             try
@@ -55,7 +59,7 @@ namespace HMCSEngine
             catch(Exception e)
             {
                 Debug.FatalLog(e);
-                Debug.CreateLogFile();
+                Quit();
                 throw;
             }
         }
@@ -63,6 +67,13 @@ namespace HMCSEngine
         public static void Update()
         {
             Inputs.Update();
+
+            Running = Raylib.WindowShouldClose() == false;
+
+            if (Inputs.KeyPressed(VKeyCodes.Function12))
+            {
+                Commands.EnterCommandModeRequest();
+            }
 
             if (Inputs.KeyPressed(VKeyCodes.P))
             {
@@ -95,7 +106,10 @@ namespace HMCSEngine
 
         public static void Quit()
         {
+            Running = false;
+            Debug.InfoLog("Quitting");
             Debug.CreateLogFile();
+
             Renderer.CloseWindow();
         }
 

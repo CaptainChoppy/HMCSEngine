@@ -18,7 +18,7 @@ namespace HMCSEngine
 
                 KeyState currentstate = KeyStates[i];
 
-                if(keystate == 32768)
+                if(keystate == 0x8000)
                 {
                     switch (currentstate)
                     {
@@ -66,7 +66,7 @@ namespace HMCSEngine
         {
             for(int i = 0; i < KeyStates.Length; i++)
             {
-                if (KeyStates[i] != KeyState.Down || KeyStates[i] != KeyState.Pressed)
+                if (KeyStates[i] == KeyState.Up || KeyStates[i] == KeyState.Released)
                 {
                     continue;
                 }

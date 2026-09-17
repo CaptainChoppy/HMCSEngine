@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System.Numerics;
 
 namespace HMCSEngine
 {
@@ -20,8 +19,6 @@ namespace HMCSEngine
         public static void Update()
         {
             CurrentMouseEvents = GetMouseEvents();
-
-            Debug.InfoLog(CurrentMouseEvents);
 
             foreach(GUIElement e in Elements)
             {
@@ -104,9 +101,24 @@ namespace HMCSEngine
                         break;
                 }
 
-                if(HoverState == GUIElementHoverState.Hover && mouseevents.MouseDown == true)
+                if (HoverState != GUIElementHoverState.Hover || HoverState != GUIElementHoverState.Enter)
                 {
-                    MouseDown(mouseevents);
+                    if (mouseevents.MouseDown == true)
+                    {
+                        MouseDown(mouseevents);
+                    }
+
+                    switch (mouseevents.MouseButtonState)
+                    {
+                        case KeyState.Pressed:
+                            MouseClick(mouseevents);
+                            break;
+                        case KeyState.Released:
+                            MouseRelease(mouseevents);
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 return;
@@ -134,6 +146,16 @@ namespace HMCSEngine
                     break;
             }
 
+        }
+
+        public virtual void MouseClick(MouseEvent mouseevents)
+        {
+            return;
+        }
+
+        public virtual void MouseRelease(MouseEvent mouseevents)
+        {
+            return;
         }
 
         public virtual void MouseDown(MouseEvent mouseevents)

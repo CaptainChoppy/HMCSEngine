@@ -14,6 +14,7 @@ namespace HMCSEngine
         private const string WarningHeader = "WARNING";
         private const string ErrorHeader = "ERROR";
         private const string FatalHeader = "FATAL";
+        private const string CommandHeader = "COMMAND";
 
         public static bool LogFiling = false;
 
@@ -21,14 +22,14 @@ namespace HMCSEngine
 
         private static List<Log> Logs = new List<Log>();
 
-        public static void Log(object message, LogLevel level, bool includeinlogfile)
+        public static void Log(object message, LogLevel level, bool filelog)
         {
             if ((int)(LogLevel) > (int)(level))
             {
                 return;
             }
 
-            if(includeinlogfile == false)
+            if(filelog == true)
             {
                 Logs.Add(new Log(level, message));
             }
@@ -36,26 +37,30 @@ namespace HMCSEngine
             Console.WriteLine($"{LogLevelToString(level)}: {message}");
         }
 
-        public static void Log(object message, LogLevel level)
+        public static void RawLog(object message)
         {
-            Log(message, level, true);
+            Console.WriteLine(message);
         }
     
         public static void InfoLog(object message)
         {
-            Log(message, LogLevel.Info);
+            Log(message, LogLevel.Info, true);
+        }
+        public static void CommandLog(object message)
+        {
+            Log(message, LogLevel.Command, true);
         }
         public static void WarningLog(object message)
         {
-            Log(message, LogLevel.Warning);
+            Log(message, LogLevel.Warning, true);
         }
         public static void ErrorLog(object message)
         {
-            Log(message, LogLevel.Error);
+            Log(message, LogLevel.Error, true);
         }
         public static void FatalLog(object message)
         {
-            Log(message, LogLevel.Fatal);
+            Log(message, LogLevel.Fatal, true);
         }
 
         public static void CreateLogFile()
@@ -121,12 +126,22 @@ namespace HMCSEngine
                     leveltext = FatalHeader;
                     break;
 
+                case LogLevel.Command:
+                    leveltext = CommandHeader;
+                    break;
+                       
                 default:
                     leveltext = "invalid log level";
                     break;
             }
 
             return leveltext;
+        }
+
+        public static string? GetConsoleInput()
+        {
+            Console.Write("> ");
+            return Console.ReadLine();
         }
     }
 
@@ -156,7 +171,9 @@ namespace HMCSEngine
         Warning,
         Error,
         Fatal,
-        NoLogs
+
+        Command
+
     }
 }
 

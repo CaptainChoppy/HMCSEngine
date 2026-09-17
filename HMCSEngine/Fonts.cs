@@ -1,4 +1,5 @@
 ﻿using Raylib_cs;
+using System.Xml.Linq;
 
 namespace HMCSEngine
 {
@@ -19,6 +20,8 @@ namespace HMCSEngine
             }
 
             slot = new FontSlot(info.Name);
+
+            Debug.InfoLog($"Loaded font {slot.Name} into slot {info.Slot}");
         }
 
         public static Font GetFont(int slotindex)

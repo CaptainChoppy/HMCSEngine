@@ -10,11 +10,11 @@ class Program
 
         HMCS.LoadLevel(0);
 
-        //Fonts.LoadFont(new FontInfo("comic", 0));
+        Fonts.LoadFont(new FontInfo("comic", 0));
 
         TestButton button = new TestButton(new Rectangle(16, 16, 16, 16));
 
-        while (Raylib.WindowShouldClose() == false)
+        while (HMCS.Running == true)
         {
             HMCS.Update();
 
@@ -26,11 +26,6 @@ class Program
 
         HMCS.Quit();
     }
-
-    public static void ClickTest()
-    {
-        Debug.InfoLog("Click (:");
-    }
 }
 
 class TestButton : GUIElement
@@ -40,7 +35,7 @@ class TestButton : GUIElement
         ColourTint = new Color(0xFF, 0x00, 0xFF, 0xFF);
     }
 
-    public override void MouseDown(MouseEvent mouseevents)
+    public override void MouseClick(MouseEvent mouseevents)
     {
         Debug.InfoLog("TEEHEE");
     }
