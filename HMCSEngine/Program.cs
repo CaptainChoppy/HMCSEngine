@@ -17,11 +17,6 @@ class Program
         while (HMCS.Running == true)
         {
             HMCS.Update();
-
-            if (Inputs.KeyPressed(VKeyCodes.Function1))
-            {
-                HMCS.LoadLevel(0);
-            }
         }
 
         HMCS.Quit();

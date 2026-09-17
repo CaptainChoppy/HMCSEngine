@@ -14,6 +14,8 @@
         public static string ProgramDirectory = "";
 
         public static string ProjectDirectory => Path.Combine(ProgramDirectory, "HMCS\\");
+        public static string LogsDirectory => Path.Combine(ProgramDirectory, "Logs\\");
+
         public static string LevelsDirectory => Path.Combine(ProjectDirectory, "levels\\");
 
         public static string LevelDataPath => Path.Combine(LevelsDirectory, "leveldata" + JSONFileExtention);

@@ -5,10 +5,9 @@ namespace HMCSEngine
     internal sealed class Debug
     {
         private const string BaseLogFileName = "Log";
-        private static string LogsDirectory => Path.Combine(Files.ProgramDirectory, "Logs\\");
 
         private static string CurrentLogFileName => $"{BaseLogFileName}_{DateTime.Now.ToString(HMCS.DateTimeFormat)}{Files.TextFileExtention}";
-        private static string CurrentLogFilePath => Path.Combine(LogsDirectory, CurrentLogFileName);
+        private static string CurrentLogFilePath => Path.Combine(Files.LogsDirectory, CurrentLogFileName);
 
         private const string InfoHeader = "INFO";
         private const string WarningHeader = "WARNING";
@@ -22,7 +21,7 @@ namespace HMCSEngine
 
         private static List<Log> Logs = new List<Log>();
 
-        public static void Log(object message, LogLevel level, bool filelog)
+        public static void Log(object? message, LogLevel level, bool filelog)
         {
             if ((int)(LogLevel) > (int)(level))
             {
@@ -36,29 +35,28 @@ namespace HMCSEngine
 
             Console.WriteLine($"{LogLevelToString(level)}: {message}");
         }
-
-        public static void RawLog(object message)
+        public static void RawLog(object? message)
         {
             Console.WriteLine(message);
         }
     
-        public static void InfoLog(object message)
+        public static void InfoLog(object? message)
         {
             Log(message, LogLevel.Info, true);
         }
-        public static void CommandLog(object message)
+        public static void CommandLog(object? message)
         {
             Log(message, LogLevel.Command, true);
         }
-        public static void WarningLog(object message)
+        public static void WarningLog(object? message)
         {
             Log(message, LogLevel.Warning, true);
         }
-        public static void ErrorLog(object message)
+        public static void ErrorLog(object? message)
         {
             Log(message, LogLevel.Error, true);
         }
-        public static void FatalLog(object message)
+        public static void FatalLog(object? message)
         {
             Log(message, LogLevel.Fatal, true);
         }
@@ -71,6 +69,11 @@ namespace HMCSEngine
             }
 
             int filecreationattempts = 0;
+
+            if (Directory.Exists(Files.LogsDirectory) == false)
+            {
+                Directory.CreateDirectory(Files.LogsDirectory);
+            }
 
             do
             {
@@ -149,9 +152,9 @@ namespace HMCSEngine
     {
         public readonly DateTime Time;
         public readonly LogLevel Level;
-        public readonly object Message;
+        public readonly object? Message;
 
-        public Log(LogLevel level, object message)
+        public Log(LogLevel level, object? message)
         {
             Level = level;
             Message = message;

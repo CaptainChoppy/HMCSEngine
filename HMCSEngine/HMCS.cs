@@ -70,7 +70,7 @@ namespace HMCSEngine
 
             Running = Raylib.WindowShouldClose() == false;
 
-            if (Inputs.KeyPressed(VKeyCodes.Function12))
+            if (Inputs.KeyPressed(VKeyCodes.Function1))
             {
                 Commands.EnterCommandModeRequest();
             }
