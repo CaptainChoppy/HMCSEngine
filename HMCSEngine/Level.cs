@@ -69,7 +69,7 @@ namespace HMCSEngine
             SpawnEntity(TilePosition.One * 10, new EntityDataID(2));
         }
 
-        private static void SpawnEntity(TilePosition position, EntityDataID id)
+        public static void SpawnEntity(TilePosition position, EntityDataID id)
         {
             EntityData data = HMCSEntityData.GetEntityData(id);
 

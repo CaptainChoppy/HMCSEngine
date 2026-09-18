@@ -51,6 +51,24 @@
             return (a.x != b.x) && (b.x != b.y);
         }
 
+        public static TilePosition StringToScreenPosition(string positiontext)
+        {
+            string unbracketedstring = positiontext.Replace("(", "");
+            unbracketedstring = unbracketedstring.Replace(")", "");
+
+            string[] positioncomponents = unbracketedstring.Split(",");
+
+            if (positioncomponents.Length != 2)
+            {
+                throw new ArgumentException($"Position string had more than 2 elements (input string: {positiontext})");
+            }
+
+            int parsedx = Convert.ToInt32(positioncomponents[0]);
+            int parsedy = Convert.ToInt32(positioncomponents[1]);
+
+            return new TilePosition(parsedx, parsedy);
+        }
+
         public static explicit operator TilePosition(WorldPosition position)
         {
             return new TilePosition(Maths.FloorToInt(position.x / Tile.TileWidth), Maths.FloorToInt(position.y / Tile.TileWidth));

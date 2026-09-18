@@ -68,11 +68,10 @@ namespace HMCSEngine
         {
             Inputs.Update();
 
-            Running = Raylib.WindowShouldClose() == false;
 
             if (Inputs.KeyPressed(VKeyCodes.Function1))
             {
-                Commands.EnterCommandModeRequest();
+                Commands.CommandMode();
             }
 
             if (Inputs.KeyPressed(VKeyCodes.P))
@@ -108,7 +107,7 @@ namespace HMCSEngine
         {
             Running = false;
             Debug.InfoLog("Quitting");
-            Debug.CreateLogFile();
+            Debug.CreateLogFile(false);
 
             Renderer.CloseWindow();
         }

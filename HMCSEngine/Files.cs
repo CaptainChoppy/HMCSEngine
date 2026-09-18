@@ -134,23 +134,15 @@
 
         public static byte[] ReadFileAllBytes(string path)
         {
-            try
-            {
-                FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(path, FileMode.Open);
 
-                byte[] buffer = new byte[stream.Length];
+            byte[] buffer = new byte[stream.Length];
 
-                stream.ReadExactly(buffer);
+            stream.ReadExactly(buffer);
 
-                stream.Close();
+            stream.Close();
 
-                return buffer;
-            }
-            catch(Exception e)
-            {
-                Debug.ErrorLog($"Failed to load file \"{path}\". Exception : {e}");
-                throw;
-            }
+            return buffer;
         }
     }
 }

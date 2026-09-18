@@ -64,8 +64,8 @@ namespace HMCSEngine
             }
             catch(Exception)
             {
-                Debug.FatalLog($"Failed to load tilemap.");
-                throw;
+                Debug.ErrorLog($"Failed to load tilemap.");
+                return;
             }
 
             for(int i = 0; i < buffer.Length; i++)

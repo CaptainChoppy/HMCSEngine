@@ -61,9 +61,9 @@ namespace HMCSEngine
             Log(message, LogLevel.Fatal, true);
         }
 
-        public static void CreateLogFile()
+        public static void CreateLogFile(bool ignoreconditions)
         {
-            if(LogFiling == false)
+            if(LogFiling == false && ignoreconditions != true)
             {
                 return;
             }

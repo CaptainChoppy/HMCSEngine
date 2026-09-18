@@ -27,8 +27,7 @@ namespace HMCSEngine
 
             if(NumberOfAtlases == 0)
             {
-                Debug.FatalLog("Failed to load any tile atlases");
-                throw new FileLoadException();
+                Debug.ErrorLog("Failed to load any tile atlases so using default");
             }
         }
 
