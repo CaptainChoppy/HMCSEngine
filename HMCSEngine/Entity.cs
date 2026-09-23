@@ -8,7 +8,7 @@ namespace HMCSEngine
 
         public WorldPosition Position { get; protected set; } = WorldPosition.Zero;
 
-        public readonly EntityData Properties;
+        public EntityData? Properties => HMCSEntityData.GetEntityData(DataID);
 
         protected WorldPosition Direction { get; set; }
 
@@ -29,8 +29,6 @@ namespace HMCSEngine
             {
                 HMCSEntityData.LoadEntityAtlas(DataID);
             }
-
-            Properties = HMCSEntityData.GetEntityData(dataid);
 
             Atlas = new EntitySpriteAtlas(this);
 

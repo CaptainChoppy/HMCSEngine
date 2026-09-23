@@ -6,13 +6,10 @@ class Program
     private static void Main()
     {
         HMCS.SetWindowTitle("HYPNOTISED-MIND CONTROL-SIMULATOR", true);
-        HMCS.Initalize();
-
-        HMCS.LoadLevel(0);
 
         Fonts.LoadFont(new FontInfo("comic", 0));
 
-        TestButton button = new TestButton(new Rectangle(16, 16, 16, 16));
+        //TestButton button = new TestButton(new Rectangle(16, 16, 16, 16));
 
         while (HMCS.Running == true)
         {

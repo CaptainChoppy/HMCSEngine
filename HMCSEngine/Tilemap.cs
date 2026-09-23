@@ -13,7 +13,7 @@ namespace HMCSEngine
 
         private static readonly byte[,] Interaction = new byte[TileLayer.TileLayerWidth, TileLayer.TileLayerHeight];
 
-        public static void Initialize()
+        static Tilemap()
         {
             for(int i = 0; i <  TileLayerCount; i++)
             {

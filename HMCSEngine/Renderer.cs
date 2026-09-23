@@ -8,9 +8,9 @@ namespace HMCSEngine
         public static int TileHorizontalViewDistance => Screen.ReferenceWidth / 16;
         public static int TileVerticalViewDistance => Screen.ReferenceHeight / 16;
 
-        public static bool ToggleDowner = true;
-        public static bool ToggleUpper = true;
-        public static bool ToggleHigher = true;
+        public static bool ToggleDowner = false;
+        public static bool ToggleUpper = false;
+        public static bool ToggleHigher = false;
 
         public static void CreateWindow()
         {
@@ -46,6 +46,7 @@ namespace HMCSEngine
             }
 
             GUI.Draw();
+            Debug.Draw();
 
             Raylib.EndDrawing();
         }

@@ -181,8 +181,8 @@ namespace HMCSEngine
 
         public bool IsPositionInsideRect(ScreenPosition position)
         {
-            ScreenPosition bottomboundary = new ScreenPosition((int)(Rect.X), (int)(Rect.Y));
-            ScreenPosition topboundary = new ScreenPosition((int)(Rect.X + Rect.Width), (int)(Rect.Y + Rect.Height));
+            ScreenPosition topboundary = new ScreenPosition((int)(Rect.X), (int)(Rect.Y));
+            ScreenPosition bottomboundary = new ScreenPosition((int)(Rect.X + Rect.Width), (int)(Rect.Y + Rect.Height));
 
             return (position.x >= bottomboundary.x) && (position.x <= topboundary.x) && (position.y >= topboundary.y) && (position.y <= topboundary.y);
         }

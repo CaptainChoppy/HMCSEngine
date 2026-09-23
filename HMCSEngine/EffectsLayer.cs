@@ -7,7 +7,7 @@ namespace HMCSEngine
 
         private static EffectLayer[] EffectLayers = new EffectLayer[LayerCount];
 
-        public static void Initalize()
+        static EffectsLayers()
         {
             for (int i = 0; i < LayerCount; i++)
             {

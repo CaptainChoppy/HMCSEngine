@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Raylib_cs;
+using System.Text;
 
 namespace HMCSEngine
 {
@@ -20,6 +21,8 @@ namespace HMCSEngine
         public static LogLevel LogLevel = LogLevel.Info;
 
         private static List<Log> Logs = new List<Log>();
+
+        public static bool DrawDebugText = true;
 
         public static void Log(object? message, LogLevel level, bool filelog)
         {
@@ -59,6 +62,30 @@ namespace HMCSEngine
         public static void FatalLog(object? message)
         {
             Log(message, LogLevel.Fatal, true);
+        }
+
+        public static void Draw()
+        {
+            if(DrawDebugText == true)
+            {
+                DebugText();
+            }
+        }
+
+        private static void DebugText()
+        {
+            string debugtext = "";
+
+            debugtext += $"Mouse position: {Cursor.Position}\r\n";
+            debugtext += $"Mouse true position: {Cursor.TruePosition}\r\n";
+            debugtext += $"Mouse percentage position: {Cursor.MousePositionPercentage}\r\n";
+            debugtext += $"Player position: {HMCS.Player.Position}\r\n";
+            debugtext += $"Entity count: {Level.EntityCounter}\r\n";
+            debugtext += $"Screen scale: {Screen.WindowScale}\r\n";
+            debugtext += $"Scaled resolution: {Screen.ScreenDimentions}\r\n";
+            debugtext += $"Global frame time: {Time.GlobalFrameTime}\r\n";
+
+            Renderer.DrawText(debugtext, 0, 10, 0, new Color(0xFF, 0x00, 0xFF, 0xFF), ScreenPosition.Zero);
         }
 
         public static void CreateLogFile(bool ignoreconditions)

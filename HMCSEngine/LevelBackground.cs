@@ -20,7 +20,14 @@ namespace HMCSEngine
                 Background = null;
             }
 
-            Background = new Texture(Files.CurrentLevelBackgroundFilePath);
+            try
+            {
+                Background = new Texture(Files.CurrentLevelBackgroundFilePath);
+            }
+            catch (Exception)
+            {
+                Debug.ErrorLog("Failed to load level background");
+            }
         }
 
         public static void Draw()

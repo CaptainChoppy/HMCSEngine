@@ -8,7 +8,7 @@ namespace HMCSEngine
 
         public const byte MaxAtlases = 16;
 
-        public static TileAtlas?[] Atlases = new TileAtlas[MaxAtlases];
+        public static TileAtlas?[] Atlases = new TileAtlas?[MaxAtlases];
 
         private static byte NumberOfAtlases = 1;
 
@@ -25,15 +25,31 @@ namespace HMCSEngine
                 LoadAtlas(i);
             }
 
-            if(NumberOfAtlases == 0)
+            if(NumberOfAtlases != 0)
             {
-                Debug.ErrorLog("Failed to load any tile atlases so using default");
+                return;
             }
+
+            NumberOfAtlases = 1;
+            Atlases[0] = HMCS.DefaultTexture;
+
+            Debug.ErrorLog("Failed to load any tile atlases so using default");
         }
 
+        /// <summary>
+        /// Loads the atlas with the index from the current level directory
+        /// </summary>
+        /// <param name="index">The index number of the atlas</param>
         private static void LoadAtlas(byte index)
         {
-            Atlases[index] = new TileAtlas(index);
+            try
+            {
+                Atlases[index] = new TileAtlas(index);
+            }
+            catch(Exception)
+            {
+                Debug.ErrorLog($"Failed to create tile atlas {index}");
+            }
         }
 
         public static TileAtlas? GetCurrentAtlas()
@@ -59,21 +75,6 @@ namespace HMCSEngine
 
                 Atlases[i] = null;
             }
-        }
-    }
-
-    internal sealed class TileAtlas : IDisposable
-    {
-        public readonly Texture Atlas;
-
-        public TileAtlas(byte index)
-        {
-            Atlas = new Texture(Files.GetLevelAtlasFilePath(index));
-        }
-
-        public void Dispose()
-        {
-            Atlas.Dispose();
         }
     }
 }

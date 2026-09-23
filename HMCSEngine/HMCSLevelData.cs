@@ -6,7 +6,7 @@
 
         private static LevelData[] Levels = new LevelData[MaxUniqueLevels];
 
-        public static void LoadLevelData()
+        static HMCSLevelData()
         {
             JSONLevelDataArrayObject? leveldata;
 

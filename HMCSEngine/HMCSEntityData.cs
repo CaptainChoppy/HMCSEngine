@@ -9,7 +9,7 @@ namespace HMCSEngine
 
         private static EntityData[] EntityData = new EntityData[MaxUniqueEntities];
 
-        public static void LoadEntityData()
+        static HMCSEntityData()
         {
             JSONEntityDataArrayObject? entitydata;
 
@@ -32,7 +32,7 @@ namespace HMCSEngine
             EntityData = JSONEntityDataArrayObject.CreateEntityDataFromJSON(entitydata);
         }
 
-        public static EntityData GetEntityData(EntityDataID? id)
+        public static EntityData? GetEntityData(EntityDataID? id)
         {
             if (id == null)
             {

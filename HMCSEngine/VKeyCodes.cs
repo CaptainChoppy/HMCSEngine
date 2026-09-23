@@ -1,9 +1,12 @@
 ﻿namespace HMCSEngine
 {
+    /// <summary>
+    /// A list of all keycodes used by GetAsyncKeyState() in user32.dll
+    /// </summary>
     public enum VKeyCodes : byte
     {
+        /// <summary>0x00 is usually reserved but here it is used by Inputs.GetKey() when no keys are down or pressed</summary>
         None = 0x00,
-
         LeftMouse = 0x01,
         RightMouse,
 

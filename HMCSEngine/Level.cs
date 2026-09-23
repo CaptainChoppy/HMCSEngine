@@ -21,20 +21,7 @@ namespace HMCSEngine
 
         public static Color BackgroundClearColour { get; private set; }
 
-        private static ushort entitycounter = 0;
-        public static ushort EntityCounter
-        {
-            get
-            {
-                ushort counter = entitycounter;
-                entitycounter++;
-                return counter;
-            }
-            private set
-            {
-                entitycounter = value;
-            }
-        }
+        public static ushort EntityCounter { get; private set; }
 
         public static void LoadLevel(byte id)
         {
@@ -69,18 +56,24 @@ namespace HMCSEngine
             SpawnEntity(TilePosition.One * 10, new EntityDataID(2));
         }
 
+        /// <summary>
+        /// Spawns an entity with the ID at the position
+        /// </summary>
+        /// <param name="position">The position where the entity will spawn</param>
+        /// <param name="id">The ID of the entity to spawn</param>
+        /// <exception cref="InvalidEntityException">Thrown when the entity with the ID does not exist</exception>
         public static void SpawnEntity(TilePosition position, EntityDataID id)
         {
-            EntityData data = HMCSEntityData.GetEntityData(id);
+            EntityData? data = HMCSEntityData.GetEntityData(id);
 
             if(data == null)
             {
-                Debug.WarningLog($"Entity {id} does not exist.");
-                return;
+                throw new InvalidEntityException();
             }
 
             Entity entity = new Entity(position, HMCS.Player, id, EntityCounter);
             Entities.Add(entity);
+            EntityCounter++;
         }
 
         public static void Update()
@@ -103,5 +96,11 @@ namespace HMCSEngine
                 e.Draw();
             }
         }
+    }
+
+    public sealed class InvalidEntityException : Exception
+    {
+        public InvalidEntityException() : base() { }
+        public InvalidEntityException(string message) : base(message) { }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Raylib_cs;
+using System.Numerics;
 
 namespace HMCSEngine
 {
     internal static class Cursor
     {
-        public static ScreenPosition TruePosition
+        public static Vector2 TruePosition
         {
             get
             {
@@ -16,15 +17,15 @@ namespace HMCSEngine
         {
             get
             {
-                return (TruePosition / Screen.WindowScale);
+                return (ScreenPosition)(TruePosition / Screen.WindowScale);
             }
         }
 
-        public static ScreenPosition MousePositionPercentage
+        public static Vector2 MousePositionPercentage
         {
             get
             {
-                return Position / Screen.ScreenDimentions;
+                return (Vector2)(Position) / Screen.ReferenceScreenDimentions;
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Raylib_cs;
-using System.Xml.Linq;
 
 namespace HMCSEngine
 {
@@ -20,8 +19,9 @@ namespace HMCSEngine
             }
 
             slot = new FontSlot(info.Name);
+            FontSlots[info.Slot] = slot;
 
-            Debug.InfoLog($"Loaded font {slot.Name} into slot {info.Slot}");
+            Debug.InfoLog($"Loaded font \"{slot.Name}\" into slot {info.Slot}");
         }
 
         public static Font GetFont(int slotindex)
@@ -59,13 +59,13 @@ namespace HMCSEngine
             if(string.IsNullOrEmpty(name) == true)
             {
                 Debug.ErrorLog("Font name was null or empty so info could not be created");
-                return;
+                throw new ArgumentException();
             }
 
-            if(slot >= Fonts.FontCount)
+            if (slot >= Fonts.FontCount)
             {
                 Debug.ErrorLog($"Slot index was out of range 0-{Fonts.FontCount} (inclusive, exclusive). index : {slot}");
-                return;
+                throw new IndexOutOfRangeException();
             }
 
             Name = name;

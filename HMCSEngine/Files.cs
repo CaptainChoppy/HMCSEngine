@@ -1,4 +1,7 @@
-﻿namespace HMCSEngine
+﻿using Raylib_cs;
+using System.Linq.Expressions;
+
+namespace HMCSEngine
 {
     internal static class Files
     {
@@ -13,14 +16,16 @@
 
         public static string ProgramDirectory = "";
 
-        public static string ProjectDirectory => Path.Combine(ProgramDirectory, "HMCS\\");
+        public static string EngineDirectory => Path.Combine(ProgramDirectory, "HMCS\\");
         public static string LogsDirectory => Path.Combine(ProgramDirectory, "Logs\\");
 
-        public static string LevelsDirectory => Path.Combine(ProjectDirectory, "levels\\");
+        public static string DefaultTexturePath => Path.Combine(EngineDirectory, "defaulttexture" + ImageFileExtention);
+
+        public static string LevelsDirectory => Path.Combine(EngineDirectory, "levels\\");
 
         public static string LevelDataPath => Path.Combine(LevelsDirectory, "leveldata" + JSONFileExtention);
 
-        public static string CurrentLevelDirectory => Path.Combine(LevelsDirectory, HMCS.LevelIndex.ToString());
+        public static string CurrentLevelDirectory => Path.Combine(LevelsDirectory, HMCS.LevelID.ToString());
 
         public static string GetLevelAtlasFilePath(byte index)
         {
@@ -29,7 +34,7 @@
         public static string CurrentLevelBackgroundFilePath => Path.Combine(CurrentLevelDirectory, "background" + ImageFileExtention);
         public static string CurrentLevelTilemapFilePath => Path.Combine(CurrentLevelDirectory, "tilemap" + TilemapFileExtention);
 
-        public static string ResourcesDirectory => Path.Combine(ProjectDirectory, "resources\\");
+        public static string ResourcesDirectory => Path.Combine(EngineDirectory, "resources\\");
 
         public static string ResourcesSoundsDirectory => Path.Combine(ResourcesDirectory, "sounds\\");
         public static string GetResourcesSoundFilePath(string name)
@@ -49,11 +54,11 @@
             return Path.Combine(ResourcesImagesDirectory, name + ImageFileExtention);
         }
 
-        public static string PlayerDirectory => Path.Combine(ProjectDirectory, "player\\");
+        public static string PlayerDirectory => Path.Combine(EngineDirectory, "player\\");
         public const string PlayerAtlasFileName = "spriteatlas" + ImageFileExtention;
         public static string PlayerAtlasFilePath => Path.Combine(PlayerDirectory, PlayerAtlasFileName);
 
-        public static string EntitiesDirectory => Path.Combine(ProjectDirectory, "entities\\");
+        public static string EntitiesDirectory => Path.Combine(EngineDirectory, "entities\\");
         public const string EntityDataFileName = "entitydata" + JSONFileExtention;
         public static string EntityDataDirectory => Path.Combine(EntitiesDirectory, EntityDataFileName);
 
@@ -67,13 +72,36 @@
             return Path.Combine(GetResourcesEntityDirectory(id), EntitiesSpriteAtlasFileName);
         }
 
-        public static string HeaderFilePath => Path.Combine(ProjectDirectory, "header.txt");
+        public static string HeaderFilePath => Path.Combine(EngineDirectory, "header.txt");
 
-        public static void CheckProjectDirectoriesExist()
+        static Files()
+        {
+            try
+            {
+                ProgramDirectory = Raylib.GetWorkingDirectoryAsString();
+                CheckEngineDirectoriesExist();
+            }
+            catch(Exception e)
+            {
+                Debug.FatalLog(e.Message);
+
+                Debug.InfoLog("Press any return to exit");
+                Debug.GetConsoleInput();
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Checks if all of the engine directories exist
+        /// </summary>
+        /// <exception cref="DirectoryNotFoundException">Thrown when a nessesary directory is not found</exception>
+        /// <exception cref="FileNotFoundException">Thrown when a nessesary file was not found</exception>
+        public static void CheckEngineDirectoriesExist()
         {
             //Directories
 
-            if (Directory.Exists(ProjectDirectory) == false)
+            if (Directory.Exists(EngineDirectory) == false)
             {
                 throw new DirectoryNotFoundException("Could not find project directory \"HMCS\\\"");
             }
@@ -143,6 +171,29 @@
             stream.Close();
 
             return buffer;
+        }
+
+
+        /// <summary>
+        /// When given a valid file path, it will load the texture as a raylib Texture2D
+        /// </summary>
+        /// <param name="path">a path to a png image file</param>
+        /// <returns>A raylib Texture2D loaded from the file at the path</returns>
+        /// <exception cref="FileNotFoundException">Thrown when the file is not found</exception>
+        /// <exception cref="FileLoadException">Thrown when the file doesnt have the png extention</exception>
+        public static Texture2D LoadTexture(string path)
+        {
+            if(File.Exists(path) == false)
+            {
+                throw new FileNotFoundException($"Texture file {Path.GetFileName(path)} does not exist");
+            }
+
+            if (Path.GetExtension(path) != ImageFileExtention)
+            {
+                throw new FileLoadException($"File {Path.GetFileName(path)} had the wrong extention (should be \".png\" for images)");
+            }
+
+            return Raylib.LoadTexture(path);
         }
     }
 }
